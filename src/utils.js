@@ -247,8 +247,12 @@ var hexToNumberString = function (value) {
  * @return {String}
  */
 var numberToHex = function (value) {
-    if (!isFinite(value) && !_.isString(value)) {
+    if (_.isNull(value) || _.isUndefined(value)) {
         return value;
+    }
+
+    if (!isFinite(value) && !isHexStrict(value)) {
+        throw new Error('Given input "'+value+'" is not a number.');
     }
 
     var number = toBN(value);
@@ -360,7 +364,7 @@ var isHexStrict = function (hex) {
  * @returns {Boolean}
  */
 var isHex = function (hex) {
-    return ((_.isString(hex) || _.isNumber(hex)) && /^(-0x)?(0x)?[0-9a-f]*$/i.test(hex));
+    return ((_.isString(hex) || _.isNumber(hex)) && /^(-0x|0x)?[0-9a-f]*$/i.test(hex));
 };
 
 
